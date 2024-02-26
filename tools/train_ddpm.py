@@ -5,7 +5,8 @@ import os
 import numpy as np
 from tqdm import tqdm
 from torch.optim import Adam
-from dataset.mnist_dataset import MnistDataset
+from data_processor.mnist_dataset import MnistDataset
+from data_processor.goog_data import Googdata
 from torch.utils.data import DataLoader
 from models.unet_base import Unet
 from scheduler.linear_noise_scheduler import LinearNoiseScheduler
@@ -34,8 +35,12 @@ def train(args):
                                      beta_end=diffusion_config['beta_end'])
     
     # Create the dataset
-    mnist = MnistDataset('train', im_path=dataset_config['im_path'])
-    mnist_loader = DataLoader(mnist, batch_size=train_config['batch_size'], shuffle=True, num_workers=4)
+    
+    # mnist = MnistDataset('train', im_path=dataset_config['im_path'])
+    # mnist_loader = DataLoader(mnist, batch_size=train_config['batch_size'], shuffle=True, num_workers=4)
+    goog = Googdata("train",data_path = dataset_config['data_path'])
+    goog_loader = DataLoader(goog, batch_size=train_config['batch_size'], shuffle=True, num_workers=4)
+
     
     # Instantiate the model
     model = Unet(model_config).to(device)
@@ -58,7 +63,8 @@ def train(args):
     # Run training
     for epoch_idx in range(num_epochs):
         losses = []
-        for im in tqdm(mnist_loader):
+        # for im in tqdm(mnist_loader):
+        for im in tqdm(goog_loader):
             optimizer.zero_grad()
             im = im.float().to(device)
             
