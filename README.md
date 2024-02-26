@@ -1,3 +1,9 @@
+!!!You need to downlaod the images using the file in /utils
+
+Here is the description from the original repo.
+
+
+
 Denoising Diffusion Probabilistic Models Implementation in Pytorch
 ========
 
