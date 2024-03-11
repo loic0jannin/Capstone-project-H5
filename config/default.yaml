@@ -1,6 +1,6 @@
 dataset_params:
   im_path: 'data/train/images'
-  data_path: 'data/train_GOOG/GOOG'
+  data_path: 'data/train_GOOG'
 
 diffusion_params:
   num_timesteps : 1000

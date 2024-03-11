@@ -49,6 +49,7 @@ class MnistDataset(Dataset):
     def __getitem__(self, index):
         im = Image.open(self.images[index])
         im_tensor = torchvision.transforms.ToTensor()(im)
+        print(im_tensor.size())
         
         # Convert input to -1 to 1 range.
         im_tensor = (2 * im_tensor) - 1
