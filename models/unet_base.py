@@ -262,6 +262,8 @@ class UpBlock(nn.Module):
     
     def forward(self, x, out_down, t_emb):
         x = self.up_sample_conv(x)
+        # print(x.shape)
+        # print(out_down.shape)
         x = torch.cat([x, out_down], dim=1)
         
         out = x

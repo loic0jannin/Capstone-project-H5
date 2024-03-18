@@ -7,6 +7,7 @@ from torchvision.utils import make_grid
 from tqdm import tqdm
 from models.unet_base import Unet
 from scheduler.linear_noise_scheduler import LinearNoiseScheduler
+import pandas as pd
 
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -30,13 +31,21 @@ def sample(model, scheduler, train_config, model_config, diffusion_config):
         
         # Save x0
         ims = torch.clamp(xt, -1., 1.).detach().cpu()
-        ims = (ims + 1) / 2
-        grid = make_grid(ims, nrow=train_config['num_grid_rows'])
-        img = torchvision.transforms.ToPILImage()(grid)
-        if not os.path.exists(os.path.join(train_config['task_name'], 'samples')):
-            os.mkdir(os.path.join(train_config['task_name'], 'samples'))
-        img.save(os.path.join(train_config['task_name'], 'samples', 'x0_{}.png'.format(i)))
-        img.close()
+        # grid = make_grid(ims, nrow=train_config['num_grid_rows'])
+        # # print(grid)
+        # img = torchvision.transforms.ToPILImage()(grid)
+        # if not os.path.exists(os.path.join(train_config['task_name'], 'samples')):
+        #     os.mkdir(os.path.join(train_config['task_name'], 'samples'))
+        # img.save(os.path.join(train_config['task_name'], 'samples', 'x0_{}.png'.format(i)))
+        # img.close()
+        for i in range(ims.shape[0]):
+            data = ims[i].numpy().reshape((12,12))
+            data = pd.DataFrame(data)
+            if not os.path.exists(os.path.join(train_config['task_name'], 'samples')):
+                os.mkdir(os.path.join(train_config['task_name'], 'samples'))
+            data.to_csv(os.path.join(train_config['task_name'], 'samples', f'x{i}.csv'.format(i)),index=False,header=False)
+
+
 
 
 def infer(args):

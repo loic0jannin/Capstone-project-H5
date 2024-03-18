@@ -18,7 +18,7 @@ class Googdata(Dataset):
         self.data = self.load_data(data_path,label)
         self.label = label
 
-    def load_data(self, data_path,label):
+    def load_data(self, data_path,label,size=12):
         if not os.path.isfile(data_path):
             assert os.path.exists(f"data/{str(label)}.csv"), "raw data {} does not exist".format(label)
             data = pd.read_csv(f"data/{str(label)}.csv")
@@ -32,13 +32,13 @@ class Googdata(Dataset):
                 os.makedirs(directory_train)
             if not os.path.exists(directory_test):
                 os.makedirs(directory_test)
-            train_num = int(len(train_data)/(28*28))
-            test_num = int(len(test_data)/(28*28))
+            train_num = int(len(train_data)/(size*size))
+            test_num = int(len(test_data)/(size*size))
             for i in range(train_num):
-                train_part = train_data[i*28*28:(i+1)*28*28].values.reshape((28,28))
+                train_part = train_data[i*size*size:(i+1)*size*size].values.reshape((size,size))
                 np.savetxt(f"data/train_{str(label)}/{str(label)}_{i}.csv",train_part, delimiter=",")
             for i in range(test_num):
-                test_part = test_data[i*28*28:(i+1)*28*28].values.reshape((28,28))
+                test_part = test_data[i*size*size:(i+1)*size*size].values.reshape((size,size))
                 np.savetxt(f"data/test_{str(label)}/{str(label)}_{i}.csv",test_part, delimiter=",")
   
         assert os.path.exists(data_path), "data path {} does not exist".format(data_path)
@@ -51,9 +51,9 @@ class Googdata(Dataset):
     def __len__(self):
         return len(self.data)   
 
-    def __getitem__(self, index):
+    def __getitem__(self, index,size=12):
         data = pd.read_csv(self.data[index], index_col=False,header=None)
-        data_tensor = torch.tensor(data.values.reshape((1,28,28)))
+        data_tensor = torch.tensor(data.values.reshape((1,size,size)))
     
         
         # Convert input to -1 to 1 range.
