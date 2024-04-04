@@ -2,5 +2,7 @@
 
 Code structure: https://miro.com/app/board/uXjVOvj_Aq8=/
 
-Link to Claudia's code: (trying to convert the 2D-UNET to a 1D-UNET)
-https://github.com/claudiacanete/TimeSeriesV2
+Link to Claudia's code: 
+Using the 1D CONV UNET: https://github.com/claudiacanete/TimeSeries1DV2
+Using the 2D CONV UNET: https://github.com/claudiacanete/TimeSeriesV2
+
